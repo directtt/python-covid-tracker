@@ -1,8 +1,8 @@
 import streamlit as st
-from scripts import today as td
 import pandas as pd
 import matplotlib.pyplot as plt
 import base64
+from scripts import today as td
 
 
 def parse_complete_data():

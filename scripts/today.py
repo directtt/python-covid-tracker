@@ -17,9 +17,9 @@ def get_download_url(url):
     return download_url
 
 
-def download_data(download_url):
+def download_data(download_url, name):
     req = requests.get(download_url)
-    path = 'D:/polish-covid-tracker/datasets/todays_data.csv'
+    path = 'D:/polish-covid-tracker/datasets/' + name
     with open(path, 'wb') as f:
         f.write(req.content)
 
@@ -38,19 +38,19 @@ def parse_data():
     return data
 
 
-def autolabel(rects, ax):
+def autolabel(rects, ax, formatting, cut):
     """
     Attach a text label above each bar displaying its height
     """
     for rect in rects:
         width = rect.get_width()
-        ax.text(rect.get_x() + rect.get_width() - 0.5, rect.get_y() + rect.get_height()/2.,
-                '%d' % width,
+        ax.text(rect.get_x() + rect.get_width() - cut, rect.get_y() + rect.get_height()/2.,
+                formatting % width,
                 ha='center', va='center', color='white')
 
 
 def app():
-    download_data(get_download_url('https://wojewodztwa-rcb-gis.hub.arcgis.com/pages/dane-do-pobrania'))
+    download_data(get_download_url('https://wojewodztwa-rcb-gis.hub.arcgis.com/pages/dane-do-pobrania'), 'todays_data.csv')
     data = parse_data()
     today = data.iloc[0, 1:]
     today.name = 'data'
@@ -71,5 +71,5 @@ def app():
     ax.barh(states['wojewodztwo'], states['liczba_przypadkow'], edgecolor="black", linewidth=1)
     ax.set_ylabel('Województwo')
     ax.set_xlabel('Liczba przypadków')
-    autolabel(ax.patches, ax)
+    autolabel(ax.patches, ax, '%d', 0.6)
     st.pyplot(fig, dpi=100)
