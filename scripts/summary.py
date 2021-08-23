@@ -40,10 +40,16 @@ def app():
     complete_data = parse_complete_data()
     data = td.parse_data()
     today = data.iloc[0, 1:]
+    last_week = complete_data.tail(7)
+    week_before = complete_data.tail(14).head(7)
+    d = {'last_week_date': last_week.iloc[0, 0] + ' - ' + last_week.iloc[-1, 0], 'last_week_mean_cases': last_week['new_cases'].mean().round(),
+         'week_bore_date': week_before.iloc[0, 0] + ' - ' + week_before.iloc[-1, 0], 'week_bore_mean_cases': week_before['new_cases'].mean().round(),
+         'perc_change': "{:.2%}".format(((last_week['new_cases'].mean().round() - week_before['new_cases'].mean().round()) / week_before['new_cases'].mean().round()))
+         }
+    weekly = pd.Series(data=d, name='weekly_data')
     plot_data = complete_data[['date', 'new_cases']]
     plot_data['date'] = pd.to_datetime(plot_data['date'], format='%d.%m.%y').dt.date
     plot_data['7day_rolling_avg'] = plot_data.new_cases.rolling(7).mean()
-    # plot_data.sort_values(by='date', inplace=True)
 
     if today['stan_rekordu_na'] not in complete_data['date'].tolist():
         complete_data = update_complete_data(complete_data, today)
@@ -56,6 +62,8 @@ def app():
     st.dataframe(data=complete_data.sort_index(ascending=False))
 
     st.markdown(file_download(complete_data), unsafe_allow_html=True)
+
+    st.dataframe(data=weekly)
 
     fig = plt.figure()
     ax = plt.axes()

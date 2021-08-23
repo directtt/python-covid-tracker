@@ -71,5 +71,5 @@ def app():
     ax.barh(states['wojewodztwo'], states['liczba_przypadkow'], edgecolor="black", linewidth=1)
     ax.set_ylabel('Województwo')
     ax.set_xlabel('Liczba przypadków')
-    autolabel(ax.patches, ax, '%d', 0.6)
+    autolabel(ax.patches, ax, '%d', 0.3)
     st.pyplot(fig, dpi=100)
