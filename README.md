@@ -3,7 +3,7 @@ Polish COVID-19 Tracker - automatically scrape, collects and display latest data
 Data is being displayed through Streamlit Web App on Heroku, beforehand scraped through Selenium Webdriver and parsed in pandas.
 
 ## Deployed on Heroku
-[Heroku link](https://polish-covid-tracker.herokuapp.com/)
+(https://polish-covid-tracker.herokuapp.com/)
 
 Showcase on the video below.
 
