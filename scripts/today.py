@@ -50,7 +50,7 @@ def autolabel(rects, ax, formatting, cut):
 
 
 def app():
-    download_data(get_download_url('https://wojewodztwa-rcb-gis.hub.arcgis.com/pages/dane-do-pobrania'), 'todays_data.csv')
+    download_data('https://www.arcgis.com/sharing/rest/content/items/153a138859bb4c418156642b5b74925b/data', 'todays_data.csv')
     data = parse_data()
     today = data.iloc[0, 1:]
     today.name = 'data'
