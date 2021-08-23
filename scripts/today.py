@@ -19,7 +19,7 @@ def get_download_url(url):
 
 def download_data(download_url, name):
     req = requests.get(download_url)
-    path = 'D:/polish-covid-tracker/datasets/' + name
+    path = 'datasets/' + name
     with open(path, 'wb') as f:
         f.write(req.content)
 

@@ -7,7 +7,7 @@ from scripts import today as td
 def parse_data():
     columns = ['wojewodztwo', 'liczba_szczepien_ogolnie', 'liczba_szczepien_dziennie',
                'dawka_2_ogolem', 'dawka_2_dziennie']
-    data = pd.read_csv('D:/polish-covid-tracker/datasets/vaccines_data.csv', encoding='windows-1250', sep=';', usecols=columns)
+    data = pd.read_csv('datasets/vaccines_data.csv', encoding='windows-1250', sep=';', usecols=columns)
     data = data[data['wojewodztwo'] != 'inne_puste_woj']
     population = {'dolnośląskie': 2898525,
                   'kujawsko-pomorskie': 2069273,
