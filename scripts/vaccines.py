@@ -44,6 +44,11 @@ def app():
     today.name = 'data'
     states = data.iloc[:-1, :].sort_values('zaszczepieni [%]', ascending=False)
 
+    st.write("""
+            ## Complete COVID-19 vaccines statistics in Poland.
+            (source: gov.pl)
+            """)
+
     st.dataframe(data=today)
     st.dataframe(data=states)
 
