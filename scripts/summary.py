@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import base64
 from scripts import today as td
 
@@ -72,6 +73,8 @@ def app():
     ax2.fill_between(plot_data['date'][-14:], plot_data['new_cases'][-14:], alpha=0.30)
     ax2.set_ylabel('Liczba przypadków')
     ax2.set_xlabel('Data')
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
+    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=1))
     ax2.tick_params(axis='x', labelrotation=40)
     st.pyplot(fig2, dpi=100)
 
