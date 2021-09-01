@@ -65,6 +65,16 @@ def app():
 
     st.dataframe(data=weekly)
 
+    fig2 = plt.figure()
+    ax2 = plt.axes()
+    ax2.plot(plot_data['date'][-14:], plot_data['new_cases'][-14:], marker='o')
+    ax2.set_title('Liczba nowych przypadków z ostatnich 14 dni')
+    ax2.fill_between(plot_data['date'][-14:], plot_data['new_cases'][-14:], alpha=0.30)
+    ax2.set_ylabel('Liczba przypadków')
+    ax2.set_xlabel('Data')
+    ax2.tick_params(axis='x', labelrotation=40)
+    st.pyplot(fig2, dpi=100)
+
     fig = plt.figure()
     ax = plt.axes()
     ax.plot(plot_data['date'], plot_data['7day_rolling_avg'])
