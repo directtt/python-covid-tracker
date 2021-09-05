@@ -4,3 +4,4 @@ requests==2.26.0
 numpy==1.21.1
 selenium==3.141.0
 matplotlib==3.4.3
+plotly==5.2.1
