@@ -1,5 +1,5 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
 import streamlit as st
 from scripts import today as td
 
@@ -54,11 +54,28 @@ def app():
 
     states['plot_val'] = states['zaszczepieni [%]'].str[:5].astype(float)
     states.sort_values('plot_val', inplace=True)
-    plt.style.use('seaborn')
-    fig = plt.figure()
-    ax = plt.axes()
-    ax.barh(states['wojewodztwo'], states['plot_val'], edgecolor="black", linewidth=1)
-    ax.set_ylabel('Województwo')
-    ax.set_xlabel('Zaszczepiona ludność [%]')
-    td.autolabel(ax.patches, ax, '%g', 1.6)
-    st.pyplot(fig, dpi=100)
+
+    fig1 = px.bar(states,
+                  x='plot_val',
+                  y='wojewodztwo',
+                  orientation='h',
+                  color='plot_val',
+                  color_continuous_scale=px.colors.sequential.Blues,
+                  opacity=0.8,
+                  labels={
+                      'plot_val': 'Zaszczepiona ludność [%]',
+                      'wojewodztwo': 'Województwo'})
+    fig1.update_traces(marker_line_color='black',
+                       marker_line_width=1)
+    fig1.update_layout(width=900, height=600)
+    st.write(fig1)
+
+    # old plot
+    # plt.style.use('seaborn')
+    # fig = plt.figure()
+    # ax = plt.axes()
+    # ax.barh(states['wojewodztwo'], states['plot_val'], edgecolor="black", linewidth=1)
+    # ax.set_ylabel('Województwo')
+    # ax.set_xlabel('Zaszczepiona ludność [%]')
+    # td.autolabel(ax.patches, ax, '%g', 1.6)
+    # st.pyplot(fig, dpi=100)

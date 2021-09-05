@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+import plotly.express as px
 import base64
 from scripts import today as td
 
@@ -66,24 +65,52 @@ def app():
 
     st.dataframe(data=weekly)
 
-    fig2 = plt.figure()
-    ax2 = plt.axes()
-    ax2.plot(plot_data['date'][-14:], plot_data['new_cases'][-14:], marker='o')
-    ax2.set_title('Liczba nowych przypadków z ostatnich 14 dni')
-    ax2.fill_between(plot_data['date'][-14:], plot_data['new_cases'][-14:], alpha=0.30)
-    ax2.set_ylabel('Liczba przypadków')
-    ax2.set_xlabel('Data')
-    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
-    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=1))
-    ax2.tick_params(axis='x', labelrotation=40)
-    st.pyplot(fig2, dpi=100)
+    fig1 = px.line(plot_data[-14:],
+                   x='date',
+                   y='new_cases',
+                   title='Liczba nowych przypadków z ostatnich 14 dni',
+                   labels={
+                       'date': 'Data',
+                       'new_cases': 'Liczba przypadków'}
+                   )
+    fig1.update_traces(mode='markers+lines', fill='tozeroy',
+                       line=dict(color="steelblue", width=2),
+                       marker=dict(size=8))
+    fig1.update_layout(width=800, height=600)
+    st.write(fig1)
 
-    fig = plt.figure()
-    ax = plt.axes()
-    ax.plot(plot_data['date'], plot_data['7day_rolling_avg'])
-    ax.set_title('Liczba nowych przypadków od początku trwania pandemii (średnia 7-dniowa)')
-    ax.fill_between(plot_data['date'], plot_data['7day_rolling_avg'], alpha=0.30)
-    ax.set_ylabel('Liczba przypadków')
-    ax.set_xlabel('Data')
-    ax.tick_params(axis='x', labelrotation=40)
-    st.pyplot(fig, dpi=100)
+    fig2 = px.line(plot_data,
+                   x='date',
+                   y='7day_rolling_avg',
+                   title='Liczba nowych przypadków od początku trwania pandemii (średnia 7-dniowa)',
+                   labels={
+                       'date': 'Data',
+                       '7day_rolling_avg': 'Tygodniowa średnia nowych zakażeń'}
+                   )
+    fig2.update_traces(fill='tozeroy',
+                       line=dict(color="steelblue", width=2))
+    fig2.update_layout(width=800, height=600)
+    st.write(fig2)
+
+    # old plots
+    # fig2 = plt.figure()
+    # ax2 = plt.axes()
+    # ax2.plot(plot_data['date'][-14:], plot_data['new_cases'][-14:], marker='o')
+    # ax2.set_title('Liczba nowych przypadków z ostatnich 14 dni')
+    # ax2.fill_between(plot_data['date'][-14:], plot_data['new_cases'][-14:], alpha=0.30)
+    # ax2.set_ylabel('Liczba przypadków')
+    # ax2.set_xlabel('Data')
+    # ax2.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.%Y'))
+    # ax2.xaxis.set_major_locator(mdates.DayLocator(interval=1))
+    # ax2.tick_params(axis='x', labelrotation=40)
+    # st.pyplot(fig2, dpi=100)
+
+    # fig = plt.figure()
+    # ax = plt.axes()
+    # ax.plot(plot_data['date'], plot_data['7day_rolling_avg'])
+    # ax.set_title('Liczba nowych przypadków od początku trwania pandemii (średnia 7-dniowa)')
+    # ax.fill_between(plot_data['date'], plot_data['7day_rolling_avg'], alpha=0.30)
+    # ax.set_ylabel('Liczba przypadków')
+    # ax.set_xlabel('Data')
+    # ax.tick_params(axis='x', labelrotation=40)
+    # st.pyplot(fig, dpi=100)

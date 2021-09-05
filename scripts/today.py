@@ -1,8 +1,8 @@
 import pandas as pd
 import requests
 import streamlit as st
+import plotly.express as px
 from selenium import webdriver
-import matplotlib.pyplot as plt
 
 
 def get_download_url(url):
@@ -64,12 +64,39 @@ def app():
     st.dataframe(data=today)
     st.dataframe(data=states.sort_values('liczba_przypadkow', ascending=False))
 
-    states.sort_values('liczba_przypadkow', inplace=True)
-    plt.style.use('seaborn')
-    fig = plt.figure()
-    ax = plt.axes()
-    ax.barh(states['wojewodztwo'], states['liczba_przypadkow'], edgecolor="black", linewidth=1)
-    ax.set_ylabel('Województwo')
-    ax.set_xlabel('Liczba przypadków')
-    autolabel(ax.patches, ax, '%d', 1)
-    st.pyplot(fig, dpi=100)
+    states.sort_values('liczba_przypadkow', inplace=True, ascending=True)
+
+    fig1 = px.bar(states,
+                  x='liczba_przypadkow',
+                  y='wojewodztwo',
+                  orientation='h',
+                  color='liczba_przypadkow',
+                  color_continuous_scale=px.colors.sequential.Blues,
+                  opacity=0.8,
+                  # title='Value Count of Subject Types',
+                  labels={
+                      'liczba_przypadkow': 'Liczba przypadków',
+                      'wojewodztwo': 'Województwo'})
+    fig1.update_traces(marker_line_color='black',
+                       marker_line_width=1)
+    fig1.update_layout(width=850, height=550)
+    st.write(fig1)
+
+    fig2 = px.pie(states,
+                  values='liczba_przypadkow',
+                  names='wojewodztwo',
+                  hole=0.5,
+                  color_discrete_sequence=px.colors.sequential.Blues_r,
+                  title='Liczba przypadków w województwach [%]')
+    fig2.update_layout(width=800, height=550)
+    st.write(fig2)
+
+    # old plot
+    # plt.style.use('seaborn')
+    # fig = plt.figure()
+    # ax = plt.axes()
+    # ax.barh(states['wojewodztwo'], states['liczba_przypadkow'], edgecolor="black", linewidth=1)
+    # ax.set_ylabel('Województwo')
+    # ax.set_xlabel('Liczba przypadków')
+    # autolabel(ax.patches, ax, '%d', 1)
+    # st.pyplot(fig, dpi=100)
