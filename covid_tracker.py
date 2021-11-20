@@ -1,5 +1,5 @@
 import streamlit as st
-from multiapp import MultiApp
+from scripts.multiapp import MultiApp
 from scripts import summary, today, vaccines
 
 app = MultiApp()
