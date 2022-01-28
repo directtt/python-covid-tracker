@@ -24,10 +24,10 @@ def download_data(download_url, name):
         f.write(req.content)
 
 
-def parse_data():
+def parse_data(path):
     cols = ['wojewodztwo', 'liczba_przypadkow', 'zgony', 'liczba_ozdrowiencow',
             'liczba_wykonanych_testow', 'liczba_osob_objetych_kwarantanna', 'stan_rekordu_na']
-    data = pd.read_csv('datasets/todays_data.csv', sep=';', encoding='windows-1250', usecols=cols)
+    data = pd.read_csv(path, sep=';', encoding='windows-1250', usecols=cols)
     data['stan_rekordu_na'] = pd.to_datetime(data['stan_rekordu_na']).dt.strftime('%d.%m.%y')
     data.insert(6, 'cases/tests[%]', data['liczba_przypadkow'] / data['liczba_wykonanych_testow'])
     perc = lambda x: "{:.2%}".format(x)
@@ -51,7 +51,7 @@ def autolabel(rects, ax, formatting, cut):
 
 def app():
     download_data('https://www.arcgis.com/sharing/rest/content/items/153a138859bb4c418156642b5b74925b/data', 'todays_data.csv')
-    data = parse_data()
+    data = parse_data('datasets/todays_data.csv')
     today = data.iloc[0, 1:]
     today.name = 'data'
     states = data.iloc[1:, :-1]

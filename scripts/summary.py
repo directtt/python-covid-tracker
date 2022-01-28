@@ -38,7 +38,7 @@ def file_download(complete_data):
 def app():
 
     complete_data = parse_complete_data()
-    data = td.parse_data()
+    data = td.parse_data('datasets/todays_data.csv')
     today = data.iloc[0, 1:]
     if today['stan_rekordu_na'] not in complete_data['date'].tolist():
         complete_data = update_complete_data(complete_data, today)
