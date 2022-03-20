@@ -27,13 +27,16 @@ def download_data(download_url, name):
 def parse_data(path):
     cols = ['wojewodztwo', 'liczba_przypadkow', 'zgony', 'liczba_ozdrowiencow',
             'liczba_wykonanych_testow', 'liczba_osob_objetych_kwarantanna', 'stan_rekordu_na']
-    data = pd.read_csv(path, sep=';', encoding='windows-1250', usecols=cols)
+    data = pd.read_csv(path, sep=';', encoding='windows-1250')
+    if 'liczba_nowych_zakazen' in data.columns:
+        data.rename(columns={'liczba_nowych_zakazen': 'liczba_przypadkow'}, inplace=True)
+    data = data[cols]
     data['stan_rekordu_na'] = pd.to_datetime(data['stan_rekordu_na']).dt.strftime('%d.%m.%y')
     data.insert(6, 'cases/tests[%]', data['liczba_przypadkow'] / data['liczba_wykonanych_testow'])
     perc = lambda x: "{:.2%}".format(x)
     data['cases/tests[%]'] = data['cases/tests[%]'].apply(perc)
     data = data.convert_dtypes()
-    data['cases/tests[%]'] = data['cases/tests[%]'].astype("string")
+    data['cases/tests[%]'] = data['cases/tests[%]'].astype("object")
 
     return data
 
